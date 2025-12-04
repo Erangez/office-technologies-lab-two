@@ -7,22 +7,26 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class ReportGenerator {
-    public static void createReport(String documentName, String pathOutput, String[] values){
+public class LabReport {
+    public static void createLabReport(String documentName, String pathOutput, String[] values, String[] imagesData){
         try{
-            FileInputStream fis = new FileInputStream("reports/examples/Реферат шаблон.docx");
+            FileInputStream fis = new FileInputStream("reports/examples/Структура отчета шаблон.docx");
             pathOutput += documentName;
             FileOutputStream fos = new FileOutputStream(pathOutput);
             XWPFDocument document = new XWPFDocument(fis);
             String[] placeHolders = PlaceHoldersFinder.findPlaceHolders(document);
             boolean wrongText = false;
             for (int i = 0; i < placeHolders.length; i++){
-                if (i == 7)
-                    wrongText = !values[i].matches("[^\\dабийтмгкКБМГ ]+");
-                if (i == 0 || i == 1 || i == 4 || i == 5)
-                    wrongText = !values[i].matches("^[А-Яа-я,. ]+$");
-                DocumentFiller.fillDocument(document, placeHolders[i], values[i], wrongText);
-                wrongText = false;
+                if (placeHolders[i].contains("{{image}}")) {
+                    DocumentFiller.fillImageData(document, imagesData);
+                }
+                else
+                    if (i == 2 || i == 4|| i == 7 || i == 9)
+                        wrongText = !values[i].matches("^\\d+$");
+                    if (i == 3 || i == 5 || i == 6)
+                        wrongText = !values[i].matches("^[А-Яа-я,. ]+$");
+                    DocumentFiller.fillDocument(document, placeHolders[i], values[i], wrongText);
+                    wrongText = false;
             }
             document.write(fos);
         } catch (FileNotFoundException e){
