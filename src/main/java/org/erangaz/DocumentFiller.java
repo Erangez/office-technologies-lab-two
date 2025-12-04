@@ -75,6 +75,7 @@ public class DocumentFiller {
                         } else {
                             paragraph.createRun().addBreak();
                             paragraph.createRun().setText(imageData);
+                            paragraph.createRun().addBreak();
                         }
                     }
                 }

@@ -18,9 +18,9 @@ public class ReportGenerator {
             boolean wrongText = false;
             for (int i = 0; i < placeHolders.length; i++){
                 if (i == 7)
-                    wrongText = !values[i].matches("[^\\dабийтмгкКБМГ ]+");
+                    wrongText = !values[i].matches("[^\\dабийтмгкКБМГ ]+$");
                 if (i == 0 || i == 1 || i == 4 || i == 5)
-                    wrongText = !values[i].matches("^[А-Яа-я,. ]+$");
+                    wrongText = !values[i].matches("^[А-Яа-яa-zA-Z,. ]+$");
                 DocumentFiller.fillDocument(document, placeHolders[i], values[i], wrongText);
                 wrongText = false;
             }
